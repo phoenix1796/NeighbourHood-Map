@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Neighbourhood Map</title>
+  <link href="css/lib/materialize.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="css/index.css" rel="stylesheet">
+</head>
+<style>
+  .box {
+    height: 100%;
+  }
+
+  .box header {
+    width: 100%;
+  }
+
+  .box main {
+    flex: 1 1 auto;
+    height: auto;
+  }
+
+  .search-results>span {
+    display: block;
+    text-align: center;
+  }
+</style>
+
+<body>
+  <ul class="sidenav sidenav-fixed" id="mobile-demo">
+    <li>
+      <a class="sidenav-close hide-on-large-only" data-target="mobile-demo" href="#">
+        <i class="material-icons">close</i>
+      </a>
+      <a class="brand-logo center">Place finder</a>
+      <div class="search-wrapper">
+        <input data-bind="event: {input: search}" id="search" placeholder="Search">
+        <i class="material-icons">search</i>
+        <div class="search-results" data-bind="foreach: markers">
+          <span data-bind="text: title, event: {mouseover: focusMarker, mouseout: defocusMarker}"></span>
+        </div>
+      </div>
+    </li>
+  </ul>
+  <div class="box">
+    <header>
+      <nav>
+        <div class="nav-wrapper teal lighten-2">
+          <a class="sidenav-trigger" data-target="mobile-demo" href="#">
+            <i class="material-icons">menu</i>
+          </a>
+        </div>
+      </nav>
+    </header>
+    <main id="map">
+    </main>
+  </div>
+</body>
+<script src=" js/lib/jquery.slim.min.js "></script>
+<script src="js/lib/materialize.min.js "></script>
+<!-- <script src="js/lib/knockout-3.4.2.js "></script> -->
+<script src="js/lib/knockout-3.5.0-beta.js "></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDnC7v_zOifd4uw0Nv9WWaQWPQWd09lrLI&v=3"></script>
+<script src="js/app.js "></script>
+<script>
+  $(document).ready(function () {
+    M.AutoInit();
+  })
+</script>
+
+</html>

@@ -1,0 +1,29 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+.box {
+  padding-left: 300px;
+  display: flex;
+  flex-flow: column;
+}
+
+@media only screen and (max-width: 992px) {
+  .box {
+    padding-left: 0;
+  }
+}
+
+.search-wrapper {
+  position: relative;
+  width: 80%;
+  margin: auto;
+  color: #777;
+}
+
+.search-wrapper i.material-icons {
+  position: absolute;
+  top: 1rem;
+  right: 10px;
+}
