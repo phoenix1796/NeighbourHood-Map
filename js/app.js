@@ -1,3 +1,7 @@
+window.onload = function() {
+  M.AutoInit();
+};
+
 function AppViewModel() {
   var self = this;
   self.locations = [
@@ -42,14 +46,30 @@ function AppViewModel() {
     });
     self.markers = self.locations.map(locInfo => self.createMarker(locInfo));
     self.map.fitBounds(self.mapBounds);
+    // Get all list nodes for searching
   };
-
+  self.searchRendered = function() {
+    self.searchSet = document.querySelectorAll('.search-results span');
+  };
   self.search = function(data, event) {
-    var searchTerm = event.currentTarget.value;
+    var searchTerm = event.currentTarget.value.toLowerCase();
+
     if (searchTerm != '') {
-      for (var i = 0; i < self.markers.length; ++i) {
-        self.markers[i].title;
+      for (var i = 0; i < self.searchSet.length; ++i) {
+        term = self.searchSet[i].innerText.toLowerCase();
+        if (term.indexOf(searchTerm) !== -1) {
+          self.searchSet[i].classList.remove('hidden');
+          self.markers[i].setMap(self.map);
+        } else {
+          self.searchSet[i].classList.add('hidden');
+          self.markers[i].setMap(null);
+        }
       }
+    } else {
+      self.searchSet.forEach(function(element, i) {
+        element.classList.remove('hidden');
+        self.markers[i].setMap(self.map);
+      });
     }
   };
 

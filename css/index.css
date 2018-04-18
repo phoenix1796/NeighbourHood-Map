@@ -27,3 +27,7 @@ body {
   top: 1rem;
   right: 10px;
 }
+
+.search-results > span.hidden {
+  display: none;
+}
