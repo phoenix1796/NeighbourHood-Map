@@ -4,35 +4,55 @@ window.onload = function() {
 
 function AppViewModel() {
   var self = this;
-  self.locations = [
-    { title: 'World of Wonders', location: { lat: 28.564019, lng: 77.325897 } },
-    {
-      title: 'Noida Sec-18 Metro station',
-      location: { lat: 28.570823, lng: 77.326112 },
-    },
-    {
-      title: 'The Great India Place Mall',
-      location: { lat: 28.567493, lng: 77.326337 },
-    },
-    {
-      title: 'Noida Sec-16 Metro station',
-      location: { lat: 28.578285, lng: 77.317636 },
-    },
-    {
-      title: 'Max Super Speciality hospital',
-      location: { lat: 28.574271, lng: 77.322936 },
-    },
-    {
-      title: 'Noida Public Library',
-      location: { lat: 28.580659, lng: 77.311757 },
-    },
-  ];
+  self.locations =
+    //   [
+    //   {
+    //     title: 'Empire State',
+    //     location: { lat: 40.748817, lng: -73.985428 },
+    //   },
+    // ];
+    [
+      {
+        title: 'World of Wonders',
+        location: { lat: 28.564019, lng: 77.325897 },
+      },
+      {
+        title: 'Noida Sec-18 Metro station',
+        location: { lat: 28.570823, lng: 77.326112 },
+      },
+      {
+        title: 'The Great India Place Mall',
+        location: { lat: 28.567493, lng: 77.326337 },
+      },
+      {
+        title: 'Noida Sec-16 Metro station',
+        location: { lat: 28.578285, lng: 77.317636 },
+      },
+      {
+        title: 'Max Super Speciality hospital',
+        location: { lat: 28.574271, lng: 77.322936 },
+      },
+      {
+        title: 'Noida Public Library',
+        location: { lat: 28.580659, lng: 77.311757 },
+      },
+    ];
 
   self.markers = [];
   self.infoWindow = new google.maps.InfoWindow();
   self.mapBounds = new google.maps.LatLngBounds();
-  self.defaultIcon = createMarkerIcon('0091ff');
-  self.highlightedIcon = createMarkerIcon('FFFF24');
+  self.defaultIcon = new google.maps.MarkerImage(
+    'http://icons.iconarchive.com/icons/paomedia/small-n-flat/32/map-marker-icon.png'
+  );
+  self.highlightedIcon = new google.maps.MarkerImage(
+    'http://icons.iconarchive.com/icons/icons-land/vista-map-markers/32/Map-Marker-Marker-Outside-Azure-icon.png'
+  );
+
+  self.fourApi = {
+    id: 'GZSHOASSQUPFKECGWUK2OJZVG0U2DRMK5PEMQYZARXVGXRT1',
+    secret: 'EUCRPWN5E3CI2JIWEATKRHZZYCLSPHTBMK5P0MTEH24VREQH',
+    baseURL: 'https://api.foursquare.com/v2/venues',
+  };
 
   self.init = function() {
     self.map = new google.maps.Map(document.getElementById('map'), {
@@ -111,10 +131,33 @@ function AppViewModel() {
       );
       self.infoWindow.marker = marker;
       self.infoWindow.open(self.map, marker);
-      setTimeout(function() {
-        self.infoWindow.setContent(`<div>${marker.title}</div>`);
-      }, 1000);
+      // setTimeout(function() {
+      //   self.infoWindow.setContent(`<div>${marker.title}</div>`);
+      // }, 1000);
+      $.get(self.fourApi.baseURL + '/search', {
+        ll: marker.position.lat() + ',' + marker.position.lng(),
+        client_id: self.fourApi.id,
+        client_secret: self.fourApi.secret,
+        v: 20180418,
+      }).done(function(data) {
+        console.dir(data);
+        var res = data.response;
+        // if (res.confident) {
+        var fourVenueId = res.venues[0].id;
+        $.get(self.fourApi.baseURL + '/' + fourVenueId + '/tips', {
+          client_id: self.fourApi.id,
+          client_secret: self.fourApi.secret,
+          v: 20180418,
+        }).done(function(data) {});
+        self.infoWindow.setContent(
+          `<div>${JSON.stringify(res.venues[0])}</div>`
+        );
+        // } else {
+        // self.infoWindow.setContent(`<div>${data}</div>`);
+        // }
+      });
 
+      // $.get('https://api.foursquare.com/v2/venues/X/tips');
       self.infoWindow.addListener('closeclick', function() {
         self.infoWindow.setMarker(null);
       });
@@ -125,19 +168,6 @@ function AppViewModel() {
 }
 
 ko.applyBindings(AppViewModel);
-
-function createMarkerIcon(markerColor) {
-  var markerIcon = new google.maps.MarkerImage(
-    'http://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|' +
-      markerColor +
-      '|40|_|%E2%80%A2',
-    new google.maps.Size(25, 40),
-    new google.maps.Point(0, 0),
-    new google.maps.Point(10, 34),
-    new google.maps.Size(25, 40)
-  );
-  return markerIcon;
-}
 
 var mapStyles = [
   {

@@ -38,7 +38,7 @@
       </a>
       <a class="brand-logo center">Place finder</a>
       <div class="search-wrapper">
-        <input data-bind="event: {input: search}" id="search" placeholder="Search">
+        <input id="search" data-bind="event: {input: search}" placeholder="Search">
         <i class="material-icons">search</i>
         <div class="search-results" data-bind="foreach: {data: markers, afterRender: searchRendered}">
           <span data-bind="text: title, event: {mouseover: focusMarker, mouseout: defocusMarker}"></span>
@@ -60,6 +60,7 @@
     </main>
   </div>
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="js/lib/materialize.min.js "></script>
 <script src="js/lib/knockout-3.5.0-beta.js "></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDnC7v_zOifd4uw0Nv9WWaQWPQWd09lrLI&v=3"></script>
