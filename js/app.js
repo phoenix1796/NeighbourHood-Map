@@ -297,7 +297,7 @@ var mapStyles = [{
     featureType: 'poi',
     elementType: 'labels',
     stylers: [{
-      visibility: 'off',
+      visibility: 'on',
     }, ],
   },
   {
@@ -332,7 +332,7 @@ var mapStyles = [{
     featureType: 'road',
     elementType: 'labels',
     stylers: [{
-      visibility: 'off',
+      visibility: 'on',
     }, ],
   },
   {
