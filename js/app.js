@@ -18,9 +18,9 @@ function AppViewModel() {
   // Map bounds to determine proper Zoom level according to markers
   self.mapBounds = new google.maps.LatLngBounds();
   // Default marker icon
-  self.defaultIcon = new google.maps.MarkerImage('/img/detect_icon_32.png');
+  self.defaultIcon = new google.maps.MarkerImage('img/detect_icon_32.png');
   // Highlighted marker icon
-  self.highlightedIcon = new google.maps.MarkerImage('/img/detect_icon_64.png');
+  self.highlightedIcon = new google.maps.MarkerImage('img/detect_icon_64.png');
   // FourSquare API Access credentials
   self.fourApi = {
     id: 'GZSHOASSQUPFKECGWUK2OJZVG0U2DRMK5PEMQYZARXVGXRT1',
