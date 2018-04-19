@@ -30,7 +30,9 @@ Web application listing best spots to be alone.
 
 ## Setup:
 
-To run this application just host it on , any server and open index.html
+Check it out at : http://achopra.me/Solitude-Spotter
+To run another instance of this application <br>
+Host it as a static website
 
 ## External Resources:
 
