@@ -5,38 +5,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Neighbourhood Map</title>
+  <title>Solitude Spotter</title>
   <link href="css/lib/materialize.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="css/index.css" rel="stylesheet">
 </head>
-<style>
-  .box {
-    height: 100%;
-  }
-
-  .box header {
-    width: 100%;
-  }
-
-  .box main {
-    flex: 1 1 auto;
-    height: auto;
-  }
-
-  .search-results>span {
-    display: block;
-    text-align: center;
-    margin: 1em;
-    border-bottom: 1px dashed #e0e0e0;
-    transition: opacity 0.2s;
-
-  }
-
-  img.circle {
-    max-width: 25vw;
-  }
-</style>
 
 <body>
   <ul class="sidenav sidenav-fixed" id="mobile-demo">
@@ -46,7 +19,7 @@
       </a>
     </li>
     <li class="center">
-      <a class="brand-logo">Solitude Spotter</a>
+      <h3 class="flow-text">Solitude Spotter</h3>
       <img class="circle" src="img/detect.png">
     </li>
 
@@ -61,6 +34,9 @@
       <div class="search-results" data-bind="foreach: {data: markers, afterRender: searchRendered}">
         <span class="waves-effect waves-teal btn-flat sidenav-close" data-target="mobile-demo" data-bind="text: title, event: {click: populateInfoWindow,mouseover: focusMarker, mouseout: defocusMarker}"></span>
       </div>
+    </li>
+    <li>
+      <img class="nav-footer" style="width: 100%;transform: translateY(-25%)" src="/img/poweredByFoursquare.png" alt="">
     </li>
   </ul>
   <div class="box">

@@ -1,10 +1,9 @@
-window.onload = function () {
+window.onload = function() {
   // Initialize Materialize.css components
   M.AutoInit();
   // Initialize & bind Application ViewModel
   ko.applyBindings(AppViewModel);
 };
-
 
 function AppViewModel() {
   var self = this;
@@ -27,10 +26,10 @@ function AppViewModel() {
     id: 'GZSHOASSQUPFKECGWUK2OJZVG0U2DRMK5PEMQYZARXVGXRT1',
     secret: 'EUCRPWN5E3CI2JIWEATKRHZZYCLSPHTBMK5P0MTEH24VREQH',
     baseURL: 'https://api.foursquare.com/v2/venues/',
-    version: '20180418'
+    version: '20180418',
   };
   // Initialize function for Application ViewModel
-  self.init = function () {
+  self.init = function() {
     // Create instance of Map
     self.map = new google.maps.Map(document.getElementById('map'), {
       center: {
@@ -50,12 +49,12 @@ function AppViewModel() {
 
   // Called when all search results have been rendered by ko.ForEach
   // Provides a list DOM Elements to search :self.searchSet
-  self.searchRendered = function () {
+  self.searchRendered = function() {
     self.searchSet = document.querySelectorAll('.search-results span');
   };
 
   // Filter function, for search results & markers
-  self.search = function (data, event) {
+  self.search = function(data, event) {
     //Convert search term to lowercase for easier searching
     var searchTerm = event.currentTarget.value.toLowerCase();
 
@@ -82,7 +81,7 @@ function AppViewModel() {
     } else {
       // If SearchTerm is empty: No Input
       // Display all elements
-      self.searchSet.forEach(function (element, i) {
+      self.searchSet.forEach(function(element, i) {
         fadeIn(element);
         self.markers[i].setMap(self.map);
       });
@@ -90,18 +89,18 @@ function AppViewModel() {
   };
 
   // Highlight marker using icon change & animation
-  self.focusMarker = function (marker) {
+  self.focusMarker = function(marker) {
     marker.setIcon(self.highlightedIcon);
     marker.setAnimation(google.maps.Animation.BOUNCE);
   };
   // Defocus from marker
-  self.defocusMarker = function (marker) {
+  self.defocusMarker = function(marker) {
     marker.setIcon(self.defaultIcon);
     marker.setAnimation(null);
   };
 
   // Create marker, set event listeners and adjust map bounds
-  self.createMarker = function (markerInfo) {
+  self.createMarker = function(markerInfo) {
     var marker = new google.maps.Marker({
       position: markerInfo.location,
       map: self.map,
@@ -115,16 +114,16 @@ function AppViewModel() {
     self.mapBounds.extend(marker.position);
 
     // Marker eventListeners
-    marker.addListener('click', function () {
+    marker.addListener('click', function() {
       // Open InfoWindow
       self.populateInfoWindow(this);
     });
-    marker.addListener('mouseover', function () {
+    marker.addListener('mouseover', function() {
       // Highlight Marker , except for Animation
       // Bounce animation wasn't user friendly
       this.setIcon(self.highlightedIcon);
     });
-    marker.addListener('mouseout', function () {
+    marker.addListener('mouseout', function() {
       this.setIcon(self.defaultIcon);
     });
     return marker;
@@ -132,7 +131,7 @@ function AppViewModel() {
 
   // Populate content in the InfoWindow &
   // Attach it to the provided marker.
-  self.populateInfoWindow = function (marker) {
+  self.populateInfoWindow = function(marker) {
     // Change only when another marker clicked
     if (self.infoWindow.marker != marker) {
       // Set content to progress bar.
@@ -145,14 +144,14 @@ function AppViewModel() {
 
       // GET data from FourSquareAPI
       $.get(self.fourApi.baseURL + marker.fsId, {
-          client_id: self.fourApi.id,
-          client_secret: self.fourApi.secret,
-          v: self.fourApi.version,
-        })
+        client_id: self.fourApi.id,
+        client_secret: self.fourApi.secret,
+        v: self.fourApi.version,
+      })
         // Called when request was successfull
-        .done(function (data) {
+        .done(function(data) {
           let venue = data.response.venue;
-          let content = '';
+          let content = '<div style="text-align: center;">';
           // Added venue photo if present
           if (venue.bestPhoto) {
             content +=
@@ -165,7 +164,7 @@ function AppViewModel() {
 
           // Added number of people around the venue
           content +=
-            "Who's here right now ?<br> " +
+            "<b>Who's here right now ?</b><br> " +
             '<span>' +
             venue.hereNow.summary +
             '(' +
@@ -174,14 +173,15 @@ function AppViewModel() {
 
           // Add FourSquare venue URL to content
           content +=
-            '<span>Find more at <a href=' +
+            '<span>Find more at <a href="' +
             venue.shortUrl +
-            'target="_blank"><img height=24 src="img/fs.jpg"></a></span><br>';
+            '" target="_blank"><img height=24 src="img/fs.jpg"></a></span><br>';
+          content += '</div>';
           // Set InfoWindow content
           self.infoWindow.setContent(content);
         })
         // Called when request to FourSquare API was unsuccessfull (STATUS_CODE other than 200)
-        .fail(function (err) {
+        .fail(function(err) {
           // Set content as error Status text
           let content = err.statusText;
           // Append custom message
@@ -192,11 +192,10 @@ function AppViewModel() {
 
       // Added listener to detach infoWindow from currentMarker ,
       // when it is closed,
-      self.infoWindow.addListener('closeclick', function () {
+      self.infoWindow.addListener('closeclick', function() {
         self.infoWindow.close();
         self.infoWindow.marker = null;
       });
-
     }
   };
 
@@ -204,11 +203,12 @@ function AppViewModel() {
 }
 
 // Location list for venues
-var locationList = [{
+var locationList = [
+  {
     title: 'World of Wonders',
     location: {
       lat: 28.564019,
-      lng: 77.325897
+      lng: 77.325897,
     },
     fsId: '4d1dac25e56f6ea8d18c5d1d',
   },
@@ -216,7 +216,7 @@ var locationList = [{
     title: 'Noida Sec-18 Metro station',
     location: {
       lat: 28.570823,
-      lng: 77.326112
+      lng: 77.326112,
     },
     fsId: '4c06593d91d776b0cfadf8f9',
   },
@@ -224,7 +224,7 @@ var locationList = [{
     title: 'The Great India Place Mall',
     location: {
       lat: 28.567493,
-      lng: 77.326337
+      lng: 77.326337,
     },
     fsId: '4cab04a614c33704cb89e63b',
   },
@@ -232,7 +232,7 @@ var locationList = [{
     title: 'Noida Sec-16 Metro station',
     location: {
       lat: 28.578285,
-      lng: 77.317636
+      lng: 77.317636,
     },
     fsId: '4c3825e16ec69c74b6a104a9',
   },
@@ -240,7 +240,7 @@ var locationList = [{
     title: 'Max Super Speciality hospital',
     location: {
       lat: 28.574271,
-      lng: 77.322936
+      lng: 77.322936,
     },
     fsId: '4cb93b95f50e224b6e7aecfb',
   },
@@ -248,17 +248,16 @@ var locationList = [{
     title: 'Noida Public Library',
     location: {
       lat: 28.580659,
-      lng: 77.311757
+      lng: 77.311757,
     },
     fsId: '5aa6ba5c23a2e65c68c616a3',
   },
 ];
 
-
 // Animation functions
 
 function fadeIn(el) {
-  setTimeout(function () {
+  setTimeout(function() {
     el.classList.remove('hidden');
     el.classList.remove('vis-hidden');
   }, 200);
@@ -266,115 +265,146 @@ function fadeIn(el) {
 
 function fadeOut(el) {
   el.classList.add('vis-hidden');
-  setTimeout(function () {
+  setTimeout(function() {
     el.classList.add('hidden');
   }, 200);
 }
 
 // GoogleMap Styles array
-var mapStyles = [{
+var mapStyles = [
+  {
     featureType: 'landscape.man_made',
     elementType: 'geometry',
-    stylers: [{
-      color: '#f7f1df',
-    }, ],
+    stylers: [
+      {
+        color: '#f7f1df',
+      },
+    ],
   },
   {
     featureType: 'landscape.natural',
     elementType: 'geometry',
-    stylers: [{
-      color: '#d0e3b4',
-    }, ],
+    stylers: [
+      {
+        color: '#d0e3b4',
+      },
+    ],
   },
   {
     featureType: 'landscape.natural.terrain',
     elementType: 'geometry',
-    stylers: [{
-      visibility: 'off',
-    }, ],
+    stylers: [
+      {
+        visibility: 'off',
+      },
+    ],
   },
   {
     featureType: 'poi',
     elementType: 'labels',
-    stylers: [{
-      visibility: 'on',
-    }, ],
+    stylers: [
+      {
+        visibility: 'on',
+      },
+    ],
   },
   {
     featureType: 'poi.business',
     elementType: 'all',
-    stylers: [{
-      visibility: 'off',
-    }, ],
+    stylers: [
+      {
+        visibility: 'off',
+      },
+    ],
   },
   {
     featureType: 'poi.medical',
     elementType: 'geometry',
-    stylers: [{
-      color: '#fbd3da',
-    }, ],
+    stylers: [
+      {
+        color: '#fbd3da',
+      },
+    ],
   },
   {
     featureType: 'poi.park',
     elementType: 'geometry',
-    stylers: [{
-      color: '#bde6ab',
-    }, ],
+    stylers: [
+      {
+        color: '#bde6ab',
+      },
+    ],
   },
   {
     featureType: 'road',
     elementType: 'geometry.stroke',
-    stylers: [{
-      visibility: 'off',
-    }, ],
+    stylers: [
+      {
+        visibility: 'off',
+      },
+    ],
   },
   {
     featureType: 'road',
     elementType: 'labels',
-    stylers: [{
-      visibility: 'on',
-    }, ],
+    stylers: [
+      {
+        visibility: 'on',
+      },
+    ],
   },
   {
     featureType: 'road.highway',
     elementType: 'geometry.fill',
-    stylers: [{
-      color: '#ffe15f',
-    }, ],
+    stylers: [
+      {
+        color: '#ffe15f',
+      },
+    ],
   },
   {
     featureType: 'road.highway',
     elementType: 'geometry.stroke',
-    stylers: [{
-      color: '#efd151',
-    }, ],
+    stylers: [
+      {
+        color: '#efd151',
+      },
+    ],
   },
   {
     featureType: 'road.arterial',
     elementType: 'geometry.fill',
-    stylers: [{
-      color: '#ffffff',
-    }, ],
+    stylers: [
+      {
+        color: '#ffffff',
+      },
+    ],
   },
   {
     featureType: 'road.local',
     elementType: 'geometry.fill',
-    stylers: [{
-      color: 'black',
-    }, ],
+    stylers: [
+      {
+        color: 'black',
+      },
+    ],
   },
   {
     featureType: 'transit.station.airport',
     elementType: 'geometry.fill',
-    stylers: [{
-      color: '#cfb2db',
-    }, ],
+    stylers: [
+      {
+        color: '#cfb2db',
+      },
+    ],
   },
   {
     featureType: 'water',
     elementType: 'geometry',
-    stylers: [{
-      color: '#a2daf2',
-    }, ],
+    stylers: [
+      {
+        color: '#a2daf2',
+      },
+    ],
   },
 ];
