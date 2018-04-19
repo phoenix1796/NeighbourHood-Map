@@ -27,6 +27,14 @@
   .search-results>span {
     display: block;
     text-align: center;
+    margin: 1em;
+    border-bottom: 1px dashed #e0e0e0;
+    transition: opacity 0.2s;
+
+  }
+
+  img.circle {
+    max-width: 25vw;
   }
 </style>
 
@@ -36,13 +44,22 @@
       <a class="sidenav-close hide-on-large-only" data-target="mobile-demo" href="#">
         <i class="material-icons">close</i>
       </a>
-      <a class="brand-logo center">Place finder</a>
-      <div class="search-wrapper">
-        <input id="search" data-bind="event: {input: search}" placeholder="Search">
-        <i class="material-icons">search</i>
-        <div class="search-results" data-bind="foreach: {data: markers, afterRender: searchRendered}">
-          <span data-bind="text: title, event: {mouseover: focusMarker, mouseout: defocusMarker}"></span>
-        </div>
+    </li>
+    <li class="center">
+      <a class="brand-logo">Solitude Spotter</a>
+      <img class="circle" src="img/detect.png">
+    </li>
+
+    <li class="search-wrapper">
+      <input id="search" data-bind="event: {input: search}" placeholder="Search">
+      <i class="material-icons">search</i>
+    </li>
+    <li>
+      <div class="divider"></div>
+    </li>
+    <li>
+      <div class="search-results" data-bind="foreach: {data: markers, afterRender: searchRendered}">
+        <span class="waves-effect waves-teal btn-flat sidenav-close" data-target="mobile-demo" data-bind="text: title, event: {click: populateInfoWindow,mouseover: focusMarker, mouseout: defocusMarker}"></span>
       </div>
     </li>
   </ul>

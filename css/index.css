@@ -28,6 +28,10 @@ body {
   right: 10px;
 }
 
+.search-results > span.vis-hidden {
+  opacity: 0;
+}
+
 .search-results > span.hidden {
   display: none;
 }
