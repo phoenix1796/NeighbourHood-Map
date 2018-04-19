@@ -3,7 +3,7 @@
 Web application listing best spots to be alone.
 
 > Most webapps try to get people together. <br>
-> Whereas sometimes, you need solitude to connect with your inner self.
+> Where as sometimes, you need solitude to connect with your inner self.
 
 ## Tech Used:
 
@@ -31,6 +31,15 @@ Web application listing best spots to be alone.
 ## Setup:
 
 To run this application just host it on , any server and open index.html
+
+## External Resources:
+
+* https://developer.foursquare.com/
+* http://icons.iconarchive.com/
+* http://snazzymaps.com/
+* https://developers.google.com/maps/
+* https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
+* http://knockoutjs.com/documentation/introduction.html
 
 ## References:
 
