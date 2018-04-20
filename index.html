@@ -32,7 +32,7 @@
     </li>
     <li>
       <div class="search-results" data-bind="foreach: searchList">
-        <span class="waves-effect waves-teal btn-flat sidenav-close" data-target="mobile-demo" data-bind="text: title, event: {click: $parent.populateInfoWindow,mouseover: $parent.focusMarker, mouseout: $parent.defocusMarker}"></span>
+        <span class="waves-effect waves-teal btn-flat sidenav-close" data-target="mobile-demo" data-bind="text: title, click: function(data, event) {GMapVm.focusMarker(data.marker)}"></span>
       </div>
     </li>
     <li>

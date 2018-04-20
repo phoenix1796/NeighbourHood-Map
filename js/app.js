@@ -1,4 +1,5 @@
 'use strict';
+
 window.onload = function() {
   // Initialize Materialize.css Sidenav
   $('.sidenav').sidenav();
@@ -13,15 +14,7 @@ function startApp() {
 
 function googleMapsSuccess() {
   // Create instance of Map
-  let map = new google.maps.Map(document.getElementById('map'), {
-    center: {
-      lat: 28.564019,
-      lng: 77.325897,
-    },
-    styles: mapStyles,
-    zoom: 13,
-  });
-  GMapVm = new GoogleMapsVM(map, locationList);
+  GMapVm = new GoogleMapsVM('map', locationList);
 
   startApp();
 }
@@ -56,8 +49,10 @@ function AppViewModel() {
     if (searchTerm == '') {
       // If SearchTerm is empty: No Input
       // Display all elements
-      this.locations().forEach(location => location.marker.setMap(GMapVm.map));
-      console.log(this.locations());
+      this.locations().forEach(location => {
+        location.visible(true);
+        location.marker.setMap(GMapVm.map);
+      });
       return this.locations();
     }
 
@@ -65,25 +60,16 @@ function AppViewModel() {
       let term = location.title.toLowerCase();
       // Check If searchTerm exists as a substring in current term.
       if (term.indexOf(searchTerm) !== -1) {
+        location.visible(true);
         location.marker.setMap(GMapVm.map);
         return true;
       } else {
+        location.visible(false);
         location.marker.setMap(null);
         return false;
       }
     });
   }, this);
-
-  // Highlight marker using icon change & animation
-  self.focusMarker = function(marker) {
-    marker.setIcon(self.highlightedIcon);
-    marker.setAnimation(google.maps.Animation.BOUNCE);
-  };
-  // Defocus from marker
-  self.defocusMarker = function(marker) {
-    marker.setIcon(self.defaultIcon);
-    marker.setAnimation(null);
-  };
 
   self.init();
 }

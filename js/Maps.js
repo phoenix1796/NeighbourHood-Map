@@ -1,18 +1,36 @@
 'use strict';
 
-function GoogleMapsVM(GMap, Locations) {
+function GoogleMapsVM(mapId, Locations) {
   let self = this;
   // GoogleMap Object
-  this.map = GMap;
+  this.map = null;
   // Map bounds to determine proper Zoom level according to markers
   this.mapBounds = new google.maps.LatLngBounds();
-  // markers
+  // Locations array
   this.locations = Locations;
   // Info window for Third Party APIs
   this.infoWindow = new google.maps.InfoWindow();
   // Marker icons
   this.defaultIcon = new google.maps.MarkerImage('img/detect_icon_32.png');
   this.highlightedIcon = new google.maps.MarkerImage('img/detect_icon_64.png');
+
+  this.init = function() {
+    self.map = new google.maps.Map(document.getElementById(mapId), {
+      styles: mapStyles,
+    });
+
+    // Center the map when window resizes
+    window.onresize = function() {
+      self.centerMap();
+    };
+
+    // Close infowindow & defocus marker on click
+    self.map.addListener('click', function() {
+      self.defocusMarker(self.infoWindow.marker);
+      self.infoWindow.close();
+    });
+  };
+
   // Create marker, set event listeners and adjust map bounds
   this.createMarker = function(markerInfo) {
     var marker = new google.maps.Marker({
@@ -30,15 +48,7 @@ function GoogleMapsVM(GMap, Locations) {
     // Marker eventListeners
     marker.addListener('click', function() {
       // Open InfoWindow
-      self.populateInfoWindow(this);
-    });
-    marker.addListener('mouseover', function() {
-      // Highlight Marker , except for Animation
-      // Bounce animation wasn't user friendly
-      this.setIcon(self.highlightedIcon);
-    });
-    marker.addListener('mouseout', function() {
-      this.setIcon(self.defaultIcon);
+      self.focusMarker(this);
     });
     return marker;
   };
@@ -54,6 +64,10 @@ function GoogleMapsVM(GMap, Locations) {
   // Populate content in the InfoWindow &
   // Attach it to the provided marker.
   this.populateInfoWindow = function(marker) {
+    if (self.infoWindow.marker != null) {
+      self.defocusMarker(self.infoWindow.marker);
+    }
+
     // Change only when another marker clicked
     if (self.infoWindow.marker != marker) {
       // Set content to progress bar.
@@ -116,8 +130,36 @@ function GoogleMapsVM(GMap, Locations) {
       // when it is closed,
       self.infoWindow.addListener('closeclick', function() {
         self.infoWindow.close();
-        self.infoWindow.marker = null;
+        self.defocusMarker(self.infoWindow.marker);
+        // Execute code on the NextTick of the browser JS engine,
+        // To avoid marker = null errors in defocusMarker function
+        setTimeout(function() {
+          self.infoWindow.marker = null;
+        });
       });
     }
   };
+
+  // Highlight marker using icon change & animation
+  this.focusMarker = function(marker) {
+    // Pan the map so that the InfoWindow is properly in view
+    self.map.panTo(marker.position);
+    // panBy InfoWindow size
+    self.map.panBy(0, -200);
+    // Change to highlighted icon
+    marker.setIcon(self.highlightedIcon);
+    marker.setAnimation(google.maps.Animation.BOUNCE);
+    self.populateInfoWindow(marker);
+  };
+  // Defocus from marker
+  this.defocusMarker = function(marker) {
+    marker.setIcon(self.defaultIcon);
+    marker.setAnimation(null);
+  };
+
+  this.centerMap = function() {
+    self.map.fitBounds(self.mapBounds);
+  };
+  // Initialize Google Maps object
+  this.init();
 }
