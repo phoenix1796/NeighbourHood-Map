@@ -1,9 +1,9 @@
 'use strict';
 window.onload = function() {
   // Initialize Materialize.css Sidenav
-  // M.AutoInit();
   $('.sidenav').sidenav();
 };
+// Global variable for Google Maps View Model (refer Map.js)
 var GMapVm;
 
 function startApp() {
