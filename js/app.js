@@ -4,34 +4,33 @@ window.onload = function() {
   // Initialize Materialize.css Sidenav
   $('.sidenav').sidenav();
 };
-// Global variable for Google Maps View Model (refer Map.js)
-var GMapVm;
 
 function startApp() {
-  // Initialize & bind Application ViewModel
-  ko.applyBindings(new AppViewModel());
-}
-
-function googleMapsSuccess() {
   // Create instance of Map
-  GMapVm = new GoogleMapsVM('map', locationList);
+  let GMapVm = new GoogleMapsViewModel('map', locationList);
 
-  startApp();
+  // Initialize & bind Application ViewModel
+  let AppVm = new AppViewModel(GMapVm);
+  ko.applyBindings(AppVm);
 }
 
-function AppViewModel() {
+// GMapVm is accessible to all internal functions as a variable
+// But , inside foreach we require it to be bound to this.
+function AppViewModel(GMapVm) {
   var self = this;
+  // Attach to this , so that it is accessible by data-bind
+  this.GMapVm = GMapVm;
   // List of locations to be converted into markers
   this.locations = ko.observableArray([]);
 
+  // Search filter to filter location list
   this.searchFilter = ko.observable('');
 
   // Initialize function for Application ViewModel
   self.init = function() {
-    // Create Markers from using the locations array
+    // Create Markers from GMapVm locations array
     GMapVm.locations.forEach(locInfo => {
       locInfo.marker = GMapVm.createMarker(locInfo);
-      locInfo.visible = ko.observable(true);
       self.locations().push(locInfo);
     });
 
@@ -50,26 +49,26 @@ function AppViewModel() {
       // If SearchTerm is empty: No Input
       // Display all elements
       this.locations().forEach(location => {
-        location.visible(true);
         location.marker.setMap(GMapVm.map);
       });
       return this.locations();
     }
 
+    // Return filtered list if,
+    // Search Term is not empty
     return this.locations().filter(function(location) {
       let term = location.title.toLowerCase();
       // Check If searchTerm exists as a substring in current term.
       if (term.indexOf(searchTerm) !== -1) {
-        location.visible(true);
         location.marker.setMap(GMapVm.map);
         return true;
       } else {
-        location.visible(false);
         location.marker.setMap(null);
         return false;
       }
     });
   }, this);
 
+  // Initialize App View Model
   self.init();
 }

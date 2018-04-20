@@ -32,7 +32,7 @@
     </li>
     <li>
       <div class="search-results" data-bind="foreach: searchList">
-        <span class="waves-effect waves-teal btn-flat sidenav-close" data-target="mobile-demo" data-bind="text: title, click: function(data, event) {GMapVm.focusMarker(data.marker)}"></span>
+        <span class="waves-effect waves-teal btn-flat sidenav-close" data-target="mobile-demo" data-bind="text: title, click: function(data) {$parent.GMapVm.focusMarker(data.marker)}"></span>
       </div>
     </li>
     <li>
@@ -57,8 +57,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="js/lib/materialize.min.js"></script>
   <script src="js/lib/knockout-3.5.0-beta.js"></script>
-  <!-- TODO: add onerror handler for google maps -->
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDnC7v_zOifd4uw0Nv9WWaQWPQWd09lrLI&v=3&callback=googleMapsSuccess"></script>
+  <script async defer onerror="GMapError()" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDnC7v_zOifd4uw0Nv9WWaQWPQWd09lrLI&v=3&callback=startApp"></script>
   <script src="js/data.js"></script>
   <script src="js/Maps.js"></script>
   <script src="js/app.js"></script>

@@ -1,6 +1,6 @@
 'use strict';
 
-function GoogleMapsVM(mapId, Locations) {
+function GoogleMapsViewModel(mapId, Locations) {
   let self = this;
   // GoogleMap Object
   this.map = null;
@@ -15,6 +15,7 @@ function GoogleMapsVM(mapId, Locations) {
   this.highlightedIcon = new google.maps.MarkerImage('img/detect_icon_64.png');
 
   this.init = function() {
+    // Initialize Map
     self.map = new google.maps.Map(document.getElementById(mapId), {
       styles: mapStyles,
     });
@@ -72,7 +73,10 @@ function GoogleMapsVM(mapId, Locations) {
     if (self.infoWindow.marker != marker) {
       // Set content to progress bar.
       self.infoWindow.setContent(
-        '<div style="width:4em;" class="progress"><div class="indeterminate"></div></div>'
+        '<h6 class="flow-text">' +
+          marker.title +
+          '</h6>' +
+          '<div style="width:100%;" class="progress"><div class="indeterminate"></div></div>'
       );
       // Attach InfoWindow to marker & open.
       self.infoWindow.marker = marker;
@@ -87,7 +91,11 @@ function GoogleMapsVM(mapId, Locations) {
         // Called when request was successfull
         .done(function(data) {
           let venue = data.response.venue;
-          let content = '<div style="text-align: center;">';
+          let content =
+            '<div style="text-align: center;">' +
+            '<h6 class="flow-text">' +
+            marker.title +
+            '</h6>';
           // Added venue photo if present
           if (venue.bestPhoto) {
             content +=
@@ -153,6 +161,9 @@ function GoogleMapsVM(mapId, Locations) {
   };
   // Defocus from marker
   this.defocusMarker = function(marker) {
+    // Check for a known GoogleMaps problem
+    // Pops up sometimes
+    if (marker == null) return;
     marker.setIcon(self.defaultIcon);
     marker.setAnimation(null);
   };
@@ -160,6 +171,12 @@ function GoogleMapsVM(mapId, Locations) {
   this.centerMap = function() {
     self.map.fitBounds(self.mapBounds);
   };
-  // Initialize Google Maps object
+
+  // Initialize GoogleMap Viewmodel
   this.init();
+}
+
+// Google Maps script loading error handler
+function GMapError() {
+  alert('There was a problem loading Google Maps , Try reloading the page.');
 }
