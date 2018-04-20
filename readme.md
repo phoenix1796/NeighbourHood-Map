@@ -31,8 +31,9 @@ Web application listing best spots to be alone.
 ## Setup:
 
 Check it out at : http://achopra.me/Solitude-Spotter
-To run another instance of this application <br>
-Host it as a static website
+or<br>
+Clone or download this git repo : https://github.com/phoenix1796/Solitude-Spotter
+& open index.html in your web browser.
 
 ## External Resources:
 
