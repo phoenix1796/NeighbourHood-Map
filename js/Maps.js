@@ -1,9 +1,9 @@
 'use strict';
 
-function GoogleMapsVM(Locations) {
+function GoogleMapsVM(GMap, Locations) {
   let self = this;
   // GoogleMap Object
-  this.map = {};
+  this.map = GMap;
   // Map bounds to determine proper Zoom level according to markers
   this.mapBounds = new google.maps.LatLngBounds();
   // markers

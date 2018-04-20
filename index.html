@@ -24,15 +24,15 @@
     </li>
 
     <li class="search-wrapper">
-      <input id="search" data-bind="event: {input: search}" placeholder="Search">
+      <input id="search" data-bind="textInput: searchFilter" placeholder="Search">
       <i class="material-icons">search</i>
     </li>
     <li>
       <div class="divider"></div>
     </li>
     <li>
-      <div class="search-results" data-bind="foreach: {data: markers, afterRender: searchRendered}">
-        <span class="waves-effect waves-teal btn-flat sidenav-close" data-target="mobile-demo" data-bind="text: title, event: {click: populateInfoWindow,mouseover: focusMarker, mouseout: defocusMarker}"></span>
+      <div class="search-results" data-bind="foreach: searchList">
+        <span class="waves-effect waves-teal btn-flat sidenav-close" data-target="mobile-demo" data-bind="text: title, event: {click: $parent.populateInfoWindow,mouseover: $parent.focusMarker, mouseout: $parent.defocusMarker}"></span>
       </div>
     </li>
     <li>
